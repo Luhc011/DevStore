@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-DevStore.WebApp.MVC-d78d35e0-3f89-471c-b24e-6cc664908323</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DevStore.Catalogo.Application\DevStore.Catalogo.Application.csproj" />
+    <ProjectReference Include="..\DevStore.Catalogo.Data\DevStore.Catalogo.Data.csproj" />
+    <ProjectReference Include="..\DevStore.Catalogo.Domain\DevStore.Catalogo.Domain.csproj" />
+    <ProjectReference Include="..\DevStore.Core\DevStore.Core.csproj" />
+  </ItemGroup>
+
+</Project>
