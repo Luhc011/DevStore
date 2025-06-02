@@ -18,6 +18,8 @@ public class Produto : Entity, IAggregateRoot
         Validar();
     }
 
+    protected Produto() { }
+
     public Guid CategoriaId { get; private set; }
     public string Nome { get; private set; } = string.Empty;
     public string Descricao { get; private set; } = string.Empty;
@@ -27,7 +29,7 @@ public class Produto : Entity, IAggregateRoot
     public string Imagem { get; private set; } = string.Empty;
     public int QuantidadeEstoque { get; private set; }
     public Dimensoes Dimensoes { get; private set; }
-    public Categoria Categoria { get; private set; } 
+    public Categoria Categoria { get; private set; }
 
     public void Ativar() => Ativo = true;
     public void Desativar() => Ativo = false;
