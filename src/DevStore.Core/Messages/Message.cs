@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace DevStore.Core.Messages;
+﻿namespace DevStore.Core.Messages;
 
 public abstract class Message
 {
@@ -10,15 +8,5 @@ public abstract class Message
     protected Message()
     {
         MessageType = GetType().Name;
-    }
-}
-
-public abstract class Event : Message, INotification
-{
-    public DateTime Timestamp { get; private set; }
-
-    protected Event()
-    {
-        Timestamp = DateTime.Now;
     }
 }
