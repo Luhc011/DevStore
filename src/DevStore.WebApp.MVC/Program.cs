@@ -4,6 +4,7 @@ using DevStore.WebApp.MVC.Data;
 using DevStore.Catalogo.Application.AutoMapper;
 using DevStore.WebApp.MVC.Setup;
 using DevStore.Catalogo.Data;
+using DevStore.Vendas.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDbContext<CatalogoContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<VendasContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

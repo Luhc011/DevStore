@@ -5,6 +5,9 @@ using DevStore.Catalogo.Domain;
 using DevStore.Catalogo.Domain.Events;
 using DevStore.Core.Communication.Mediator;
 using DevStore.Vendas.Application.Commands;
+using DevStore.Vendas.Data;
+using DevStore.Vendas.Data.Repository;
+using DevStore.Vendas.Domain;
 using MediatR;
 
 namespace DevStore.WebApp.MVC.Setup;
@@ -24,6 +27,9 @@ public static class DependencyInjection
         //services.AddScoped<INotificationHandler<ProdutoAbaixoEstoqueEvent>, ProdutoEventHandler>();
 
         // Vendas
-        services.AddScoped<IRequestHandler<AdicionarItemPedidoCommand, bool>, PedidoCommandHandler>()
+        services.AddScoped<IPedidoRepository, PedidoRepository>();
+        services.AddScoped<VendasContext>();
+
+        services.AddScoped<IRequestHandler<AdicionarItemPedidoCommand, bool>, PedidoCommandHandler>();
     }
 }

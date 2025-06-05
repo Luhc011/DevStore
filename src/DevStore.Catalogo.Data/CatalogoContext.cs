@@ -11,16 +11,6 @@ public class CatalogoContext : DbContext, IUnitOfWork
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Categoria> Categorias { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder mb)
-    {
-        foreach (var property in mb.Model.GetEntityTypes().SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
-        {
-            property.SetColumnType("varchar(100)");
-        }
-
-        mb.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);
-    }
-
     public async Task<bool> Commit()
     {
         var entityEntries = ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("DataCadastro") != null);
@@ -32,5 +22,15 @@ public class CatalogoContext : DbContext, IUnitOfWork
         }
 
         return await base.SaveChangesAsync() > 0;
+    }
+
+    protected override void OnModelCreating(ModelBuilder mb)
+    {
+        foreach (var property in mb.Model.GetEntityTypes().SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
+        {
+            property.SetColumnType("varchar(100)");
+        }
+
+        mb.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);
     }
 }

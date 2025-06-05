@@ -23,6 +23,7 @@
     <ProjectReference Include="..\DevStore.Catalogo.Domain\DevStore.Catalogo.Domain.csproj" />
     <ProjectReference Include="..\DevStore.Core\DevStore.Core.csproj" />
     <ProjectReference Include="..\DevStore.Vendas.Application\DevStore.Vendas.Application.csproj" />
+    <ProjectReference Include="..\DevStore.Vendas.Data\DevStore.Vendas.Data.csproj" />
   </ItemGroup>
 
 </Project>
