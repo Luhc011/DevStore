@@ -2,9 +2,11 @@
 using DevStore.Catalogo.Data;
 using DevStore.Catalogo.Data.Repository;
 using DevStore.Catalogo.Domain;
-using DevStore.Catalogo.Domain.Events;
 using DevStore.Core.Communication.Mediator;
+using DevStore.Core.Messages.CommonMessages.Notifications;
 using DevStore.Vendas.Application.Commands;
+using DevStore.Vendas.Application.Events;
+using DevStore.Vendas.Application.Queries;
 using DevStore.Vendas.Data;
 using DevStore.Vendas.Data.Repository;
 using DevStore.Vendas.Domain;
@@ -16,7 +18,11 @@ public static class DependencyInjection
 {
     public static void AddRegisterServices(this IServiceCollection services)
     {
+        // MediatR
         services.AddScoped<IMediatorHandler, MediatorHandler>();
+
+        // Domain Notifications
+        services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
         // Catalogo
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
@@ -27,9 +33,13 @@ public static class DependencyInjection
         //services.AddScoped<INotificationHandler<ProdutoAbaixoEstoqueEvent>, ProdutoEventHandler>();
 
         // Vendas
+        services.AddScoped<IRequestHandler<AdicionarItemPedidoCommand, bool>, PedidoCommandHandler>();
         services.AddScoped<IPedidoRepository, PedidoRepository>();
+        services.AddScoped<IPedidoQueries, PedidoQueries>();
         services.AddScoped<VendasContext>();
 
-        services.AddScoped<IRequestHandler<AdicionarItemPedidoCommand, bool>, PedidoCommandHandler>();
+        services.AddScoped<INotificationHandler<PedidoRascunhoIniciadoEvent>, PedidoEventHandler>();
+        services.AddScoped<INotificationHandler<PedidoItemAdicionadoEvent>, PedidoEventHandler>();
+
     }
 }

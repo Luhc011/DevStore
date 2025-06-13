@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevStore.Catalogo.Data.Migrations
 {
     [DbContext(typeof(CatalogoContext))]
-    [Migration("20250602120425_Initial")]
+    [Migration("20250611180019_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -91,7 +91,7 @@ namespace DevStore.Catalogo.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("DevStore.Core.DomainObjects.Dimensoes", "Dimensoes", b1 =>
+                    b.OwnsOne("DevStore.Catalogo.Domain.Dimensoes", "Dimensoes", b1 =>
                         {
                             b1.Property<Guid>("ProdutoId")
                                 .HasColumnType("uniqueidentifier");

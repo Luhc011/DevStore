@@ -29,7 +29,10 @@ public class VendasContext : DbContext, IUnitOfWork
             if (entry.State is EntityState.Modified) entry.Property("DataCadastro").IsModified = false;
         }
 
-        return await base.SaveChangesAsync() > 0;
+        var sucesso = await base.SaveChangesAsync() > 0;
+        if (sucesso) await _mediator.PublicarEventos(this);
+
+        return sucesso;
     }
 
     protected override void OnModelCreating(ModelBuilder mb)
@@ -44,7 +47,7 @@ public class VendasContext : DbContext, IUnitOfWork
             .SelectMany(e => e.GetProperties())
             .Where(p => p.ClrType == typeof(decimal));
 
-        foreach(var property in decimalProps)
+        foreach (var property in decimalProps)
         {
             property.SetColumnType("decimal(18,2)");
         }

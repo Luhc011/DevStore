@@ -18,8 +18,7 @@ public class VoucherMapping : IEntityTypeConfiguration<Voucher>
         // 1 : N => Voucher : Pedidos
         builder.HasMany(c => c.Pedidos)
             .WithOne(c => c.Voucher)
-            .HasForeignKey(c => c.VoucherId)
-            .IsRequired(false);
+            .HasForeignKey(c => c.VoucherId);
 
         builder.ToTable("Vouchers");
     }

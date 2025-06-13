@@ -1,5 +1,6 @@
 ﻿using DevStore.Catalogo.Domain;
 using DevStore.Core.Data;
+using DevStore.Core.Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevStore.Catalogo.Data;
@@ -31,6 +32,7 @@ public class CatalogoContext : DbContext, IUnitOfWork
             property.SetColumnType("varchar(100)");
         }
 
+        mb.Ignore<Event>();
         mb.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DevStore.Core.DomainObjects;
+﻿using DevStore.Core.DomainObjects;
+
+namespace DevStore.Catalogo.Domain;
 
 public class Dimensoes
 {

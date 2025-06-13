@@ -1,5 +1,7 @@
 ﻿using DevStore.Core.Communication.Mediator;
 using DevStore.Core.Messages;
+using DevStore.Core.Messages.CommonMessages.Notifications;
+using DevStore.Vendas.Application.Events;
 using DevStore.Vendas.Domain;
 using MediatR;
 
@@ -29,7 +31,8 @@ public class PedidoCommandHandler :
             pedido = Pedido.PedidoFactory.NovoPedidoRascunho(message.ClienteId);
             pedido.AdicionarItem(pedidoItem);
 
-            _pedidoRepository.AdicionarItem(pedidoItem);
+            _pedidoRepository.Adicionar(pedido);
+            pedido.AdicionarEvento(new PedidoRascunhoIniciadoEvent(message.ClienteId, pedido.Id));
         }
         else
         {
@@ -46,6 +49,7 @@ public class PedidoCommandHandler :
             }
         }
 
+        pedido.AdicionarEvento(new PedidoItemAdicionadoEvent(pedido.ClienteId, pedido.Id, message.ProdutoId, message.Nome, message.ValorUnitario, message.Quantidade));
         return await _pedidoRepository.UnitOfWork.Commit();
     }
 
@@ -55,8 +59,7 @@ public class PedidoCommandHandler :
 
         foreach (var error in message.ValidationResult.Errors)
         {
-            // publish a notification with the error
-
+            _mediatorHandler.PublicarNotificacao(new DomainNotification(message.MessageType, error.ErrorMessage));
         }
 
         return false;

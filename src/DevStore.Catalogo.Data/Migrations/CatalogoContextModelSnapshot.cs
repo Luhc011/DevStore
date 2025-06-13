@@ -88,7 +88,7 @@ namespace DevStore.Catalogo.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("DevStore.Core.DomainObjects.Dimensoes", "Dimensoes", b1 =>
+                    b.OwnsOne("DevStore.Catalogo.Domain.Dimensoes", "Dimensoes", b1 =>
                         {
                             b1.Property<Guid>("ProdutoId")
                                 .HasColumnType("uniqueidentifier");

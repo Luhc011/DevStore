@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DevStore.Catalogo.Application.ViewModels;
 using DevStore.Catalogo.Domain;
-using DevStore.Core.DomainObjects;
 
 namespace DevStore.Catalogo.Application.AutoMapper;
 
