@@ -57,7 +57,7 @@ public class PedidoRepository : IPedidoRepository
 
     public async Task<PedidoItem> ObterItemPorPedido(Guid pedidoId, Guid produtoId)
     {
-        return await _context.PedidoItems.FirstOrDefaultAsync(p => p.PedidoId == pedidoId && p.ProdutoId == produtoId);
+        return await _context.PedidoItems.FirstOrDefaultAsync(p => p.ProdutoId == produtoId && p.PedidoId == pedidoId);
     }
 
     public void AdicionarItem(PedidoItem pedidoItem)

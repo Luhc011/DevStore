@@ -1,4 +1,5 @@
 ﻿using DevStore.Core.DomainObjects;
+using FluentValidation.Results;
 
 namespace DevStore.Vendas.Domain;
 
@@ -30,11 +31,15 @@ public class Pedido : Entity, IAggregateRoot
 
     protected Pedido() => _pedidoItems = [];
 
-    public void AplicarVoucher(Voucher voucher)
+    public ValidationResult AplicarVoucher(Voucher voucher)
     {
+        var validationResult = voucher.ValidarSeAplicavel();
+        if (!validationResult.IsValid) return validationResult;
         Voucher = voucher;
         VoucherUtilizado = true;
         CalcularValorPedido();
+
+        return validationResult;
     }
 
     public void CalcularValorPedido()
@@ -80,7 +85,7 @@ public class Pedido : Entity, IAggregateRoot
     {
         if (!item.EhValido()) return;
 
-        item.AssociarPedido(item.PedidoId);
+        item.AssociarPedido(Id);
 
         if (PedidoItemExistente(item))
         {
