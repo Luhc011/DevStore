@@ -23,7 +23,6 @@ public class ProdutoEventHandler :
     {
         var produto = await _produtoRepository.ObterPorId(notification.AggregateId);
 
-        // Enviar um email para aquisicao de mais produtos.
     }
 
     public async Task Handle(PedidoIniciadoEvent notification, CancellationToken cancellationToken)
