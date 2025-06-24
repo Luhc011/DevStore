@@ -1,4 +1,6 @@
 ﻿using DevStore.Core.Communication.Mediator;
+using DevStore.Core.DomainObjects.DTO;
+using DevStore.Core.Extensions;
 using DevStore.Core.Messages;
 using DevStore.Core.Messages.CommonMessages.Notifications;
 using DevStore.Vendas.Application.Events;
@@ -157,6 +159,15 @@ public class PedidoCommandHandler :
 
         var pedido = await _pedidoRepository.ObterPedidoRascunhoPorClienteId(message.ClienteId);
         pedido.IniciarPedido();
+
+        var listaItens = new List<Item>();
+        pedido.PedidoItems.ForEach(i => listaItens.Add(new Item { Id = i.ProdutoId, Quantidade = i.Quantidade }));
+        var listaProdutosPedido = new ListaProdutosPedido { PedidoId = pedido.Id, Itens = listaItens };
+
+        pedido.AdicionarEvento(new PedidoIniciadoEvent(pedido.Id, pedido.ClienteId, listaProdutosPedido, pedido.ValorTotal, message.NomeCartao, message.NumeroCartao, message.ExpiracaoCartao, message.CvvCartao));
+
+        _pedidoRepository.Atualizar(pedido);
+        return await _pedidoRepository.UnitOfWork.Commit();
     }
 
     private bool ValidarComando(Command message)

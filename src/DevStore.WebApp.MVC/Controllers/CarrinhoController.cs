@@ -60,10 +60,7 @@ public class CarrinhoController : ControllerBase
         var command = new RemoverItemPedidoCommand(ClienteId, id);
         await _mediatorHandler.EnviarComando(command);
 
-        if (OperacaoValida())
-        {
-            return RedirectToAction("Index");
-        }
+        if (OperacaoValida()) return RedirectToAction("Index");
 
         return View("Index", await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
     }
@@ -78,10 +75,7 @@ public class CarrinhoController : ControllerBase
         var command = new AtualizarItemPedidoCommand(ClienteId, id, quantidade);
         await _mediatorHandler.EnviarComando(command);
 
-        if (OperacaoValida())
-        {
-            return RedirectToAction("Index");
-        }
+        if (OperacaoValida()) return RedirectToAction("Index");
 
         return View("Index", await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
     }
@@ -93,10 +87,7 @@ public class CarrinhoController : ControllerBase
         var command = new AplicarVoucherPedidoCommand(ClienteId, voucherCodigo);
         await _mediatorHandler.EnviarComando(command);
 
-        if (OperacaoValida())
-        {
-            return RedirectToAction("Index");
-        }
+        if (OperacaoValida()) return RedirectToAction("Index");
 
         return View("Index", await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
     }
@@ -118,10 +109,7 @@ public class CarrinhoController : ControllerBase
 
         await _mediatorHandler.EnviarComando(command);
 
-        if (OperacaoValida())
-        {
-            return RedirectToAction("Index", "Pedido");
-        }
+        if (OperacaoValida()) return RedirectToAction("Index", "Pedido");
 
         return View("ResumoDaCompra", await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
     }

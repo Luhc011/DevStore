@@ -1,4 +1,5 @@
 ﻿using DevStore.Core.Messages;
+using DevStore.Core.Messages.CommonMessages.DomainEvents;
 using DevStore.Core.Messages.CommonMessages.Notifications;
 using MediatR;
 
@@ -24,6 +25,11 @@ public class MediatorHandler : IMediatorHandler
     }
 
     public async Task PublicarNotificacao<T>(T notificacao) where T : DomainNotification
+    {
+        await _mediator.Publish(notificacao);
+    }
+
+    public async Task PublicarDomainEvent<T>(T notificacao) where T : DomainEvent
     {
         await _mediator.Publish(notificacao);
     }
