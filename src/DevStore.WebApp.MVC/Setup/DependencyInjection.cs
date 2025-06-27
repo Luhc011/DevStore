@@ -55,6 +55,7 @@ public static class DependencyInjection
         services.AddScoped<INotificationHandler<PedidoItemAdicionadoEvent>, PedidoEventHandler>();
         services.AddScoped<INotificationHandler<PedidoEstoqueRejeitadoEvent>, PedidoEventHandler>();
 
+        // Pagamento
         services.AddScoped<IPagamentoRepository, PagamentoRepository>();
         services.AddScoped<IPagamentoService, PagamentoService>();
         services.AddScoped<IPagamentoCartaoCreditoFacade, PagamentoCartaoCreditoFacade>();
