@@ -5,7 +5,8 @@ namespace DevStore.Pagamentos.Business;
 public class Pagamento : Entity, IAggregateRoot
 {
     public Guid PedidoId { get; set; }
-    public string Status { get; set; } = string.Empty;
+    //public string Status { get; set; } = string.Empty;
+    public string Status { get; private set; } = string.Empty;
     public decimal Valor { get; set; }
 
     public string NomeCartao { get; set; } = string.Empty;
@@ -14,5 +15,7 @@ public class Pagamento : Entity, IAggregateRoot
     public string CvvCartao { get; set; } = string.Empty;
 
     // EF. Rel.
-    public Transacao Transacao { get; set; } 
+    public Transacao Transacao { get; set; }
+
+    public void AtualizarStatusPagamento(string status) => Status = status;
 }
