@@ -118,7 +118,7 @@ public class Pedido : Entity, IAggregateRoot
     public void AtualizarItem(PedidoItem item)
     {
         if (!item.EhValido()) return;
-        item.AssociarPedido(item.Id);
+        item.AssociarPedido(Id);
 
         var itemExistente = _pedidoItems.FirstOrDefault(p => p.ProdutoId == item.ProdutoId);
 

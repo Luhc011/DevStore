@@ -1,10 +1,10 @@
-﻿using DevStore.Core.Communication.Mediator;
+﻿using DevStore.Core.Messages.CommonMessages.IntegrationEvents;
+using DevStore.Core.Messages.CommonMessages.Notifications;
+using DevStore.Core.Communication.Mediator;
+using DevStore.Vendas.Application.Events;
 using DevStore.Core.DomainObjects.DTO;
 using DevStore.Core.Extensions;
 using DevStore.Core.Messages;
-using DevStore.Core.Messages.CommonMessages.IntegrationEvents;
-using DevStore.Core.Messages.CommonMessages.Notifications;
-using DevStore.Vendas.Application.Events;
 using DevStore.Vendas.Domain;
 using MediatR;
 
@@ -15,7 +15,10 @@ public class PedidoCommandHandler :
     IRequestHandler<AtualizarItemPedidoCommand, bool>,
     IRequestHandler<RemoverItemPedidoCommand, bool>,
     IRequestHandler<AplicarVoucherPedidoCommand, bool>,
-    IRequestHandler<IniciarPedidoCommand, bool>
+    IRequestHandler<IniciarPedidoCommand, bool>,
+    IRequestHandler<FinalizarPedidoCommand, bool>,
+    IRequestHandler<CancelarProcessamentoPedidoEstornarEstoqueCommand, bool>,
+    IRequestHandler<CancelarProcessamentoPedidoCommand, bool>
 {
     private readonly IPedidoRepository _pedidoRepository;
     private readonly IMediatorHandler _mediatorHandler;
@@ -88,6 +91,7 @@ public class PedidoCommandHandler :
 
         return await _pedidoRepository.UnitOfWork.Commit();
     }
+
     public async Task<bool> Handle(RemoverItemPedidoCommand message, CancellationToken cancellationToken)
     {
         if (!ValidarComando(message)) return false;
@@ -116,6 +120,7 @@ public class PedidoCommandHandler :
 
         return await _pedidoRepository.UnitOfWork.Commit();
     }
+
     public async Task<bool> Handle(AplicarVoucherPedidoCommand message, CancellationToken cancellationToken)
     {
         if (!ValidarComando(message)) return false;
@@ -168,6 +173,58 @@ public class PedidoCommandHandler :
         pedido.AdicionarEvento(new PedidoIniciadoEvent(pedido.Id, pedido.ClienteId, listaProdutosPedido, pedido.ValorTotal, message.NomeCartao, message.NumeroCartao, message.ExpiracaoCartao, message.CvvCartao));
 
         _pedidoRepository.Atualizar(pedido);
+        return await _pedidoRepository.UnitOfWork.Commit();
+    }
+
+    public async Task<bool> Handle(FinalizarPedidoCommand message, CancellationToken cancellationToken)
+    {
+        var pedido = await _pedidoRepository.ObterPorId(message.PedidoId);
+
+        if (pedido is null)
+        {
+            await _mediatorHandler.PublicarNotificacao(new DomainNotification("pedido", "Pedido não encontrado!"));
+            return false;
+        }
+
+        pedido.FinalizarPedido();
+
+        pedido.AdicionarEvento(new PedidoFinalizadoEvent(message.PedidoId));
+        return await _pedidoRepository.UnitOfWork.Commit();
+    }
+
+    public async Task<bool> Handle(CancelarProcessamentoPedidoEstornarEstoqueCommand message, CancellationToken cancellationToken)
+    {
+        var pedido = await _pedidoRepository.ObterPorId(message.PedidoId);
+
+        if (pedido is null)
+        {
+            await _mediatorHandler.PublicarNotificacao(new DomainNotification("pedido", "Pedido não encontrado!"));
+            return false;
+        }
+
+        var itensList = new List<Item>();
+        pedido.PedidoItems.ForEach(i => itensList.Add(new Item { Id = i.Id, Quantidade = i.Quantidade }));
+        var listaProdutosPedido = new ListaProdutosPedido { PedidoId = message.PedidoId, Itens = itensList };
+
+        pedido.AdicionarEvento(new PedidoProcessamentoCanceladoEvent(pedido.Id, pedido.ClienteId, listaProdutosPedido));
+        pedido.TornarRascunho();
+
+        return await _pedidoRepository.UnitOfWork.Commit();
+
+    }
+
+    public async Task<bool> Handle(CancelarProcessamentoPedidoCommand message, CancellationToken cancellationToken)
+    {
+        var pedido = await _pedidoRepository.ObterPorId(message.PedidoId);
+
+        if (pedido is null)
+        {
+            await _mediatorHandler.PublicarNotificacao(new DomainNotification("pedido", "Pedido não encontrado!"));
+            return false;
+        }
+
+        pedido.TornarRascunho();
+
         return await _pedidoRepository.UnitOfWork.Commit();
     }
 
