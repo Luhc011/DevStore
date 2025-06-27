@@ -2,6 +2,7 @@
 using DevStore.Core.DomainObjects.DTO;
 using DevStore.Core.Extensions;
 using DevStore.Core.Messages;
+using DevStore.Core.Messages.CommonMessages.IntegrationEvents;
 using DevStore.Core.Messages.CommonMessages.Notifications;
 using DevStore.Vendas.Application.Events;
 using DevStore.Vendas.Domain;

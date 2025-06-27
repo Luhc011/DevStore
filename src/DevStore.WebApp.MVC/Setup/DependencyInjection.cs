@@ -3,7 +3,14 @@ using DevStore.Catalogo.Data;
 using DevStore.Catalogo.Data.Repository;
 using DevStore.Catalogo.Domain;
 using DevStore.Core.Communication.Mediator;
+using DevStore.Core.Messages.CommonMessages.IntegrationEvents;
 using DevStore.Core.Messages.CommonMessages.Notifications;
+using DevStore.Pagamentos.AntiCorruption;
+using DevStore.Pagamentos.AntiCorruption.Interfaces;
+using DevStore.Pagamentos.Business;
+using DevStore.Pagamentos.Business.Interfaces;
+using DevStore.Pagamentos.Data;
+using DevStore.Pagamentos.Data.Repository;
 using DevStore.Vendas.Application.Commands;
 using DevStore.Vendas.Application.Events;
 using DevStore.Vendas.Application.Queries;
@@ -41,9 +48,18 @@ public static class DependencyInjection
         services.AddScoped<IRequestHandler<AtualizarItemPedidoCommand, bool>, PedidoCommandHandler>();
         services.AddScoped<IRequestHandler<RemoverItemPedidoCommand, bool>, PedidoCommandHandler>();
         services.AddScoped<IRequestHandler<AplicarVoucherPedidoCommand, bool>, PedidoCommandHandler>();
+        services.AddScoped<IRequestHandler<IniciarPedidoCommand, bool>, PedidoCommandHandler>();
+
 
         services.AddScoped<INotificationHandler<PedidoRascunhoIniciadoEvent>, PedidoEventHandler>();
         services.AddScoped<INotificationHandler<PedidoItemAdicionadoEvent>, PedidoEventHandler>();
+        services.AddScoped<INotificationHandler<PedidoEstoqueRejeitadoEvent>, PedidoEventHandler>();
 
+        services.AddScoped<IPagamentoRepository, PagamentoRepository>();
+        services.AddScoped<IPagamentoService, PagamentoService>();
+        services.AddScoped<IPagamentoCartaoCreditoFacade, PagamentoCartaoCreditoFacade>();
+        services.AddScoped<IPayPalGateway, PayPalGateway>();
+        services.AddScoped<IConfigManager, ConfigManager>();
+        services.AddScoped<PagamentoContext>();
     }
 }

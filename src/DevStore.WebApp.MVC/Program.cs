@@ -1,10 +1,11 @@
+using DevStore.Catalogo.Application.AutoMapper;
+using DevStore.Catalogo.Data;
+using DevStore.Pagamentos.Data;
+using DevStore.Vendas.Data;
+using DevStore.WebApp.MVC.Data;
+using DevStore.WebApp.MVC.Setup;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DevStore.WebApp.MVC.Data;
-using DevStore.Catalogo.Application.AutoMapper;
-using DevStore.WebApp.MVC.Setup;
-using DevStore.Catalogo.Data;
-using DevStore.Vendas.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 builder.Services.AddDbContext<CatalogoContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<VendasContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<PagamentoContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
