@@ -43,6 +43,7 @@ public class PagamentoService : IPagamentoService
 
         if (transacao.StatusTransacao == StatusTransacao.Pago)
         {
+            pagamento.AtualizarStatusPagamento(StatusTransacao.Pago.ToString());
             pagamento.AdicionarEvento(new PedidoPagamentoRealizadoEvent(pedido.Id, pagamentoPedido.ClienteId, transacao.PagamentoId, transacao.Id, pedido.Valor));
 
             _repository.Adicionar(pagamento);
