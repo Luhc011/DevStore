@@ -50,13 +50,9 @@ public class PedidoCommandHandler :
             pedido.AdicionarItem(pedidoItem);
 
             if (pedidoItemExistente)
-            {
                 _pedidoRepository.AtualizarItem(pedido.PedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId));
-            }
             else
-            {
                 _pedidoRepository.AdicionarItem(pedidoItem);
-            }
         }
 
         pedido.AdicionarEvento(new PedidoItemAdicionadoEvent(pedido.ClienteId, pedido.Id, message.ProdutoId, message.Nome, message.ValorUnitario, message.Quantidade));
