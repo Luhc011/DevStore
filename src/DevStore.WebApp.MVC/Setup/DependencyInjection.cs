@@ -4,6 +4,7 @@ using DevStore.Catalogo.Data.Repository;
 using DevStore.Catalogo.Domain;
 using DevStore.Catalogo.Domain.Events;
 using DevStore.Core.Communication.Mediator;
+using DevStore.Core.Data.EventSourcing;
 using DevStore.Core.Messages.CommonMessages.IntegrationEvents;
 using DevStore.Core.Messages.CommonMessages.Notifications;
 using DevStore.Pagamentos.AntiCorruption;
@@ -19,6 +20,7 @@ using DevStore.Vendas.Application.Queries;
 using DevStore.Vendas.Data;
 using DevStore.Vendas.Data.Repository;
 using DevStore.Vendas.Domain;
+using EventSourcing;
 using MediatR;
 
 namespace DevStore.WebApp.MVC.Setup;
@@ -32,6 +34,9 @@ public static class DependencyInjection
 
         // Domain Notifications
         services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
+
+        // Event Sourcing
+        services.AddSingleton<IEventSourcingRepository, EventSourcingRepository>();
 
         // Catalogo
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
